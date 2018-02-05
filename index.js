@@ -11,13 +11,32 @@ config = {
 
 const twitter = new Twitter(config);
 
-const error = function (err, response, body) {
+const error =  (err, response, body) => {
     console.log('ERROR [%s]', err);
 };
-const success = function (data) {
-    const object = JSON.parse(data);
-    console.dir(object, {depth: null, colors: true})
 
+const checkIfTrending = (trends) => {
+    let isTrending = false;
+    const searchItem = trends.find((trend) => {
+        return trend.name === process.argv[2];
+    });
+    if (searchItem !== undefined) {
+        isTrending = true;
+        return {
+            isTrending,
+            trend: searchItem.name,
+            url: searchItem.url
+        }
+    } else {
+        return `${process.argv[2]} is not trending`;
+    }
+};
+
+const success =  (data) => {
+    const trendData= JSON.parse(data);
+    const trends = trendData[0].trends;
+    const currentTrend = checkIfTrending(trends);
+    console.log(currentTrend);
 };
 
 
