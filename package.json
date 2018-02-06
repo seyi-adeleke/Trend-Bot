@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^5.0.0",
+    "twilio": "^3.11.2",
     "twitter-node-client": "0.0.6"
   }
 }
