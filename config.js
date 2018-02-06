@@ -8,6 +8,10 @@ const config = {
     twillio: {
         accountSidTwillio: process.env.accountSidTwillio,
         authTokenTwillio: process.env.authTokenTwillio,
+    },
+    number: {
+        from: process.env.from,
+        to: process.env.to,
     }
 };
 module.exports = config;
