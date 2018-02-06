@@ -1,19 +1,9 @@
 const Twitter  = require('twitter-node-client').Twitter;
 require('dotenv').config();
 
+const config = require('./config');
 
-config = {
-    "consumerKey": process.env.consumerKey,
-    "consumerSecret": process.env.consumerSecret,
-    "accessToken": process.env.accessToken,
-    "accessTokenSecret": process.env.accessTokenSecret,
-};
-
-const twitter = new Twitter(config);
-
-const error =  (err, response, body) => {
-    console.log('ERROR [%s]', err);
-};
+const twitter = new Twitter(config.twitter);
 
 const checkIfTrending = (trends) => {
     let isTrending = false;
@@ -32,13 +22,18 @@ const checkIfTrending = (trends) => {
     }
 };
 
-const success =  (data) => {
+const success = (data) => {
     const trendData= JSON.parse(data);
     const trends = trendData[0].trends;
     const currentTrend = checkIfTrending(trends);
-    console.log(currentTrend);
+    if (typeof currentTrend === "object") {
+        require("./sms")(currentTrend);
+    }
+};
+
+const error =  (err, response, body) => {
+    console.log('ERROR [%s]', err);
 };
 
 
 twitter.getCustomApiCall('/trends/place.json', {id: '1398823'}, error, success);
-
